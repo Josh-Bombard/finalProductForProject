@@ -1,0 +1,15 @@
+body {
+  background-color: #5b6269;
+}
+
+table {
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.review-link {
+  text-decoration: none !important;
+  color: white;
+}
+

@@ -1,0 +1,38 @@
+
+.navbar {
+  width: 100%; 
+  background-color: dark; 
+}
+
+
+.ml-auto {
+  margin-left: auto;
+}
+
+
+.navbar a,
+.navbar button {
+  color: #fff;
+  margin-right: 10px; 
+}
+
+/* Style the active link (if needed) */
+.navbar a.active,
+.navbar button.active {
+  font-weight: bold; /* Example: Make the active link bold */
+}
+
+.brand-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #666; /* Your preferred text color */
+  /* Add any additional styling for the first part of the brand name */
+}
+
+.fancy-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #ff5733; /* Your preferred text color */
+  font-family: 'cursive'; /* Choose a fancy font family */
+  /* Add any additional styling for the second part of the brand name */
+}
