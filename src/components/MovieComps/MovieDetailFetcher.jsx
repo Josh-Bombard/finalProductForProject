@@ -19,8 +19,9 @@ function MovieDetailsFetcher({ imdbID, children }) {
   return (
     <div>
       {React.cloneElement(children, { movieDetails })}
+      
     </div>
   );
 }
 
-export default MovieDetailsFetcher;
+export default MovieDetailsFetcher; 
