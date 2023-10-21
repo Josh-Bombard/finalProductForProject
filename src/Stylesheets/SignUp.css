@@ -1,8 +1,8 @@
 .sign-up-card {
-  background-color: #f7f7f7; /* Light gray background color */
+  background-color: #f7f7f7; 
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
 }
 
 .sign-up-sheet {
@@ -11,11 +11,11 @@
 
 .sign-up-form {
   margin: 0 auto;
-  max-width: 400px; /* Adjust the max-width as needed */
+  max-width: 400px; 
 }
 
 h2 {
-  color: #333; /* Slightly darker text color */
+  color: #333; 
 }
 
 .form-group {
@@ -23,25 +23,25 @@ h2 {
 }
 
 label {
-  color: #555; /* Darker label text color */
+  color: #555; 
 }
 
 .input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc; /* Light border */
+  border: 1px solid #ccc; 
   border-radius: 5px;
   color: #333;
 }
 
 .input:focus {
   outline: none;
-  border-color: #007bff; /* Blue border color on focus */
+  border-color: #007bff; 
 }
 
 .submit-button {
-  background-color: #007bff; /* Blue button background color */
-  color: #fff; /* White button text color */
+  background-color: #007bff; 
+  color: #fff; 
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -49,5 +49,5 @@ label {
 }
 
 .submit-button:hover {
-  background-color: #0056b3; /* Slightly darker blue on hover */
+  background-color: #0056b3; 
 }
