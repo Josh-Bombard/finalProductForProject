@@ -1,0 +1,237 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import fetchUserProfile from './fetchUserProfile'; // Import your fetchUserProfile function
+import axios from 'axios';
+
+
+function UserProfile({ reviews}) {
+  const { userId } = useParams();
+  const [userProfile, setUserProfile] = useState(null);
+  const [userMovieDetails, setUserMovieDetails] = useState();
+  const [loading, setLoading] = useState(true);
+
+  console.log(userId);
+  // useEffect(() => {
+  //   // Fetch user data and reviewed movies when the component mounts
+  //   fetchUserProfile(userId)
+  //     .then((data) => {
+  //       console.log("Fetched data:", data);
+  //       setUserProfile(data);
+  //     });
+  // }, [userId]);
+
+  useEffect(() => {
+    console.log('Loading useEffect data...')
+
+    if (userId) {
+      // Fetch user data and reviewed movies when the component mounts
+      fetchUserProfile(userId)
+        .then((data) => {
+          console.log("Fetched data:", data);
+          setUserProfile(data);
+console.log('Data: ', data)
+
+          if (reviews) {
+            console.log('Fetching reviews...')
+            // Fetch movie details for each review
+            const fetchMovieDetailsForReviews = async () => {
+              for (const review of reviews) {
+                try {
+                  const response = await axios.get(
+                    `http://www.omdbapi.com/?i=${review.imdbID}&apikey=8a2962f6`
+                  );
+                  console.log(`useEffect user movieDetails: `, response.data)
+                  const userMovieDetails = response.data;
+                  setUserMovieDetails((prevDetails) => ({
+                    ...prevDetails,
+                    [review.imdbID]: userMovieDetails,
+                  }));
+                  console.log(review.imdbID);
+                } catch (error) {
+                  console.error('Error fetching movie details:', error);
+                }
+              }
+              setLoading(false); // Data fetching is complete
+            };
+
+            fetchMovieDetailsForReviews();
+          } else {
+            setLoading(false); // No reviews for this user
+          }
+        });
+    }
+  }, [userId]);
+
+  if (loading) {
+    return <div>Loading...</div>; // Add loading indicator
+  }
+
+  
+
+  const { user } = userProfile;
+
+  console.log(`User logged in: ${user.name}`)
+  console.log(userMovieDetails)
+
+  return (
+    <div className='container text-center'>
+      {/* <ReviewForm userId={user.id} /> */}
+      <h2>User Profile</h2>
+        <div>
+          
+        </div>
+     
+      <h3>{user.name}'s Profile</h3>
+      <p>Favorite Movie: {user.favoriteMovie}</p>
+      <p>Review of Favorite Movie: {user.favMovieReview}</p>
+
+      <h3>Reviewed Movies:</h3>
+      <ul>
+      {reviews
+        ? reviews
+          .filter((review) => review.userId === user.id) 
+          .map((review, index) => (
+            <span key={index}>
+              <Link to={`/movie/${review.imdbID}`} className="review-link">
+                {review.movieTitle}
+              </Link>
+              {index < reviews.length - 1 && ', '}
+              {userMovieDetails[review.imdbID] && (
+                <div>
+                  <p>Movie Title: {userMovieDetails[review.imdbID].Title}</p>
+                  <p>Year: {userMovieDetails[review.imdbID].Year}</p>
+                  {/* Add more details as needed */}
+                </div>
+              )}
+            </span>
+          ))
+        : <span>No reviewed movies yet</span>}
+      </ul>
+    </div>
+   
+  );
+}
+
+export default UserProfile;
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { Link, useParams } from 'react-router-dom';
+// import fetchUserProfile from './fetchUserProfile'; // Import your fetchUserProfile function
+// import ReviewStatus from '../ReviewComps/ReviewStatus';
+// import axios from 'axios';
+
+
+// function UserProfile({ reviews}) {
+//   const { userId } = useParams();
+//   const [userProfile, setUserProfile] = useState(null);
+//   const [userMovieDetails, setUserMovieDetails] = useState();
+//   const [loading, setLoading] = useState(true);
+
+//   console.log(userId);
+//   // useEffect(() => {
+//   //   // Fetch user data and reviewed movies when the component mounts
+//   //   fetchUserProfile(userId)
+//   //     .then((data) => {
+//   //       console.log("Fetched data:", data);
+//   //       setUserProfile(data);
+//   //     });
+//   // }, [userId]);
+
+//   useEffect(() => {
+//     // Clear the previous user's data
+//     setUserProfile(null);
+//     setUserMovieDetails({});
+//     setLoading(true);
+
+//     if (userId) {
+//       // Fetch user data and reviewed movies when the component mounts
+//       fetchUserProfile(userId)
+//         .then((data) => {
+//           console.log("Fetched data:", data);
+//           setUserProfile(data);
+
+//           const { reviews } = data;
+
+//           if (reviews) {
+//             // Fetch movie details for each review
+//             const fetchMovieDetailsForReviews = async () => {
+//               for (const review of reviews) {
+//                 try {
+//                   const response = await axios.get(
+//                     `http://www.omdbapi.com/?i=${review.imdbID}&apikey=8a2962f6`
+//                   );
+//                   const userMovieDetails = response.data;
+//                   setUserMovieDetails((prevDetails) => ({
+//                     ...prevDetails,
+//                     [review.imdbID]: userMovieDetails,
+//                   }));
+//                   console.log(review.imdbID);
+//                 } catch (error) {
+//                   console.error('Error fetching movie details:', error);
+//                 }
+//               }
+//               setLoading(false); // Data fetching is complete
+//             };
+
+//             fetchMovieDetailsForReviews();
+//           } else {
+//             setLoading(false); // No reviews for this user
+//           }
+//         });
+//     }
+//   }, [userId]);
+
+//   if (loading) {
+//     return <div>Loading...</div>; // Add loading indicator
+//   }
+
+  
+
+//   const { user } = userProfile;
+
+//   console.log(`User logged in: ${user.name}`)
+//   console.log(userMovieDetails)
+
+//   return (
+//     <div className='container text-center'>
+//       {/* <ReviewForm userId={user.id} /> */}
+//       <h2>User Profile</h2>
+//         <div>
+          
+//         </div>
+     
+//       <h3>{user.name}'s Profile</h3>
+//       <p>Favorite Movie: {user.favoriteMovie}</p>
+//       <p>Review of Favorite Movie: {user.favMovieReview}</p>
+
+//       <h3>Reviewed Movies:</h3>
+//       <ul>
+//       {reviews
+//         ? reviews
+//           .filter((review) => review.userId === user.id) 
+//           .map((review, index) => (
+//             <span key={index}>
+//               <Link to={`/movie/${review.imdbID}`} className="review-link">
+//                 {review.movieTitle}
+//               </Link>
+//               {index < reviews.length - 1 && ', '}
+//               {userMovieDetails[review.imdbID] && (
+//                 <div>
+//                   <p>Movie Title: {userMovieDetails[review.imdbID].Title}</p>
+//                   <p>Year: {userMovieDetails[review.imdbID].Year}</p>
+//                   {/* Add more details as needed */}
+//                 </div>
+//               )}
+//             </span>
+//           ))
+//         : <span>No reviewed movies yet</span>}
+//       </ul>
+//     </div>
+   
+//   );
+// }
+
+// export default UserProfile;

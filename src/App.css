@@ -13,3 +13,11 @@ table {
   color: white;
 }
 
+.user-review-link {
+  color: #212529;
+}
+
+.tiny-text {
+  font-size: 0.8em; /* Adjust the font size as needed for "tiny" text */
+  color: #cccccc; /* Use a slightly darker color than white */
+}

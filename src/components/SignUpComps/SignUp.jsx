@@ -33,7 +33,6 @@ setIsSubmitting(true);
     // Clear the form fields
     setNewUser({
       name: "",
-      password: "",
       favoriteMovie: "",
       favMovieReview: 0
     });
@@ -52,40 +51,56 @@ setIsSubmitting(true);
 };
 
   return ( 
-    <Card>
-      <CardBody>
+    <Card className="sign-up-card">
+  <CardBody>
     <div className='sign-up-sheet'>
       <h2>Enter Info Below!</h2>
       <div className='sign-up-form'>
-    
-      
-    <Form onSubmit={handleAddUser}>
-      <FormGroup>
-        <Label for='name' >Name</Label>
-        <Input name='name' type='text' placeholder='Username' value={newUser.name} onChange={handleNewUserChange}/>
-      </FormGroup>
-      <FormGroup>
-        <Label for='password' >Password</Label>
-        <Input name='password' type='password' placeholder='Password' value={newUser.password} onChange={handleNewUserChange}/>
-      </FormGroup>
-      <h2>Movie Details</h2>
-      <FormGroup>
-        <Label for='favoriteMovie'>Movie Name</Label>
-        <Input name='favoriteMovie' type='text' placeholder='Favorite Movie Name' value={newUser.favoriteMovie} onChange={handleNewUserChange}/>
-      </FormGroup>
-      <FormGroup>
-        <Label for='favMovieReview'>Movie Review</Label>
-        <Input name='favMovieReview' type='text' placeholder="Fav Movie Review" value={newUser.favMovieReview} onChange={handleNewUserChange}/>
-      </FormGroup>
-      <Button color="primary" type='submit' >Submit</Button>
-    </Form>
-    
-    
+        <Form onSubmit={handleAddUser}>
+          <FormGroup className="form-group">
+            <Label for='name'>Name</Label>
+            <Input
+              className="input"
+              name='name'
+              type='text'
+              placeholder='User Name'
+              value={newUser.name}
+              onChange={handleNewUserChange}
+            />
+          </FormGroup>
+          
+          <h2>Movie Details</h2>
+          <FormGroup className="form-group">
+            <Label for='favoriteMovie'>Movie Name</Label>
+            <Input
+              className="input"
+              name='favoriteMovie'
+              type='text'
+              placeholder='Favorite Movie Name'
+              value={newUser.favoriteMovie}
+              onChange={handleNewUserChange}
+            />
+          </FormGroup>
+          <FormGroup className="form-group">
+            <Label for='favMovieReview'>Movie Review</Label>
+            <Input
+              className="input"
+              name='favMovieReview'
+              type='text'
+              placeholder="Fav Movie Review"
+              value={newUser.favMovieReview}
+              onChange={handleNewUserChange}
+            />
+          </FormGroup>
+          <Button className="submit-button" color="primary" type='submit'>
+            Submit
+          </Button>
+        </Form>
       </div>
       <div></div>
     </div>
-    </CardBody>
-    </Card>
+  </CardBody>
+</Card>
    );
 }
 

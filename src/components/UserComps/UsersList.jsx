@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
 import { USERS_API } from '../../api\'s/USERS_API';
 import axios from 'axios';
@@ -14,7 +14,7 @@ function UsersList({users, onDeleteUser, setUsers}) {
 
   const [selectedUser, setSelectedUser] = useState("");
   const navigate = useNavigate();
-  const {user: loggedUser, login} = useUser();
+  const {user, login} = useUser();
   const [reviews, setReviews] = useState([]);
 
 
@@ -69,10 +69,7 @@ function UsersList({users, onDeleteUser, setUsers}) {
     navigate(`/user/${user.id}`);
   };
 
-  const handleLogin = () => {
-    // Redirect to the user profile when login is successful
-    navigate(`/user/${loggedUser.id}`);
-  };
+
   
 
   console.log('Rendering users:', users);
@@ -94,17 +91,14 @@ function UsersList({users, onDeleteUser, setUsers}) {
 
   
   return ( 
-    <div>
-{/* Check if a user is logged in */}
-{/* {loggedUser ? ( 
-        <Login onLogin={handleLogin} />
-      ) : null} */}
+    <div className='users-list'>
 
-    <Table dark striped className='container text-center'>
+
+    <Table dark striped className='table'>
       <thead>
         <tr>
         <td>ID</td>
-        <td>Name</td>
+        <td>Name <span className='tiny-text'>(click to log-in)</span></td>
         <td>Favorite Movie</td>
         <td>Rating of Fav Movie</td>
         <td>Reviewed Movies</td>
@@ -131,7 +125,7 @@ function UsersList({users, onDeleteUser, setUsers}) {
             {user.favMovieReview}
           </td>
 
-          <td onClick={console.log(`Sending Parameter: ${reviews}`)}>
+          <td onClick={() => console.log(`Sending Parameter: ${reviews}`)}>
             {<ReviewStatus reviews={reviews} userid = {user.id}/>}
           </td>
 
@@ -140,7 +134,7 @@ function UsersList({users, onDeleteUser, setUsers}) {
             </td>
             
             <td>
-            <Button onClick={() => handleDeleteClick(user)} color='danger'>Delete</Button>
+            <Button className='delete' onClick={() => handleDeleteClick(user)} color='danger'>Delete</Button>
             </td>
         </tr>
 )})}

@@ -1,55 +1,124 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import fetchUserProfile from './fetchUserProfile'; // Import your fetchUserProfile function
-import ReviewStatus from '../ReviewComps/ReviewStatus';
+import { Link, useParams } from 'react-router-dom';
+import fetchUserProfile from './fetchUserProfile';
+import axios from 'axios';
+import { Button, Card, CardBody, CardImg, CardText, CardTitle } from 'reactstrap';
+import { REVIEWS_API } from '../../api\'s/REVIEWS_API';
 
 
-function UserProfile() {
+function UserProfile({ reviews, onDeleteReviewCallback }) {
   const { userId } = useParams();
   const [userProfile, setUserProfile] = useState(null);
+  const [userMovieDetails, setUserMovieDetails] = useState();
+  const [loading, setLoading] = useState(true);
 
-  
+  console.log('Reviews for user: ', reviews)
+
+
   useEffect(() => {
-    // Fetch user data and reviewed movies when the component mounts
-    fetchUserProfile(userId)
-      .then((data) => {
-        console.log("Fetched data:", data);
+    if (userId) {
+      fetchUserProfile(userId).then((data) => {
         setUserProfile(data);
+
+        if (reviews) {
+          const fetchMovieDetailsForReviews = async () => {
+            for (const review of reviews) {
+              try {
+                const response = await axios.get(
+                  `http://www.omdbapi.com/?i=${review.imdbID}&apikey=8a2962f6`
+                );
+                const userMovieDetails = response.data;
+                setUserMovieDetails((prevDetails) => ({
+                  ...prevDetails,
+                  [review.imdbID]: userMovieDetails,
+                }));
+              } catch (error) {
+                console.error('Error fetching movie details:', error);
+              }
+            }
+            setLoading(false);
+          };
+
+          fetchMovieDetailsForReviews();
+        } else {
+          setLoading(false);
+        }
       });
-  }, [userId]);
+    }
+  }, [userId, reviews]);
 
-  if (!userProfile) {
-    return <div>Loading...</div>; // Add loading indicator
+  if (loading) {
+    return <div>Loading...</div>;
   }
+  const { user } = userProfile;
 
-  const { user, movies } = userProfile;
+  const handleDeleteReview = (review) => {
+    console.log('Deleting review:', review);
+    axios.delete(REVIEWS_API + `/${review.id}`)
+      .then(() => {
+        onDeleteReviewCallback(review.id);
+        console.log('Review deleted:', review.id);
+      })
+      .catch((error) => {
+        console.error('Error deleting review:', error);
+      });
+  };
 
-  console.log(`User logged in: ${user.name}`)
+
+
 
   return (
     <div className='container text-center'>
-      {/* <ReviewForm userId={user.id} /> */}
-      <h2>User Profile</h2>
-        <div>
-          
+      <Card>
+      <CardBody>
+        <CardTitle className="profile-header">
+          <span className="text-user">User</span>
+          <span className="text-profile">Profile</span>
+        </CardTitle>
+        <div className="user-profile-holder">
+          <CardTitle tag="h3" className="user-name">
+            {user.name}'s Profile
+          </CardTitle>
+          <CardText className="favorite-movie">
+            Favorite Movie: {user.favoriteMovie}
+          </CardText>
+          <CardText className="review-favorite-movie">
+            Review of Favorite Movie: {user.favMovieReview}
+          </CardText>
         </div>
-     
-      <h3>{user.name}'s Profile</h3>
-      <p>Favorite Movie: {user.favoriteMovie}</p>
-      <p>Review of Favorite Movie: {user.favMovieReview}</p>
-
-      <h3>Reviewed Movies:</h3>
-      <ul>
-        {/* {user.reviewedMovies.map((review, index) => (
-          <li key={index}>
-            <h5>Movie: {review.movieName}</h5>
-            <p>Review: {review.reviewContent}</p>
-          </li>
-        ))} */}
-      </ul>
+      </CardBody>
+    </Card>
+      
+      <h3 className="reviewed-movies-header">Reviewed Movies</h3>
+      <div className="movie-card-container">
+        {reviews
+          ? reviews
+            .filter((review) => review.userId === user.id)
+            .map((review, index) => (
+<Card key={index} className="movie-card">
+  {userMovieDetails[review.imdbID] && (
+    <CardBody>
+      <CardTitle className="movie-title">
+        <Link to={`/movie/${review.imdbID}`} className="user-review-link">
+          {userMovieDetails[review.imdbID].Title} ({userMovieDetails[review.imdbID].Year})
+        </Link>
+      </CardTitle>
+      <CardImg
+        src={userMovieDetails[review.imdbID].Poster}
+        alt={userMovieDetails[review.imdbID].Title}
+        className="movie-poster"
+      />
+      <CardText className="review-content">{review.reviewContent}</CardText>
+    </CardBody>
+  )}
+  <Button onClick={() => handleDeleteReview(review)} className="delete-button">Delete</Button>
+</Card>
+            ))
+          : <h1 className='no-review'>No reviewed movies yet</h1>}
+      </div>
     </div>
-   
   );
 }
 
 export default UserProfile;
+

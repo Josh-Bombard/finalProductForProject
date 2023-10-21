@@ -2,14 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useUser } from '../UserComps/UserContext';
 
 
 
 function MovieSearch() {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-
+  const {user} = useUser();
   const OMDB_API_KEY = '8a2962f6';
+ 
+  console.log(user)
 
   const searchMovies = async () => {
     try {
@@ -29,6 +32,13 @@ function MovieSearch() {
   return (
     <div className='text-center'>
       <h2>Movie Search</h2>
+
+      {user ? ( // Check if a user is logged in
+        <h3>Logged User: {user.name}</h3>
+      ) : (
+        <h3>Not Logged In</h3>
+      )}
+
       <input
         className='query'
         type="text"

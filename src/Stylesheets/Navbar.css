@@ -13,26 +13,27 @@
 .navbar a,
 .navbar button {
   color: #fff;
-  margin-right: 10px; 
+  margin-right: 10px;
+  font-family: 'cursive';
 }
 
-/* Style the active link (if needed) */
+
 .navbar a.active,
 .navbar button.active {
-  font-weight: bold; /* Example: Make the active link bold */
+  font-weight: bold; 
 }
 
 .brand-text {
   font-size: 24px;
   font-weight: bold;
-  color: #666; /* Your preferred text color */
-  /* Add any additional styling for the first part of the brand name */
+  color: #666; 
+ 
 }
 
 .fancy-text {
   font-size: 36px;
   font-weight: bold;
-  color: #ff5733; /* Your preferred text color */
-  font-family: 'cursive'; /* Choose a fancy font family */
-  /* Add any additional styling for the second part of the brand name */
+  color: #ff5733; 
+  font-family: 'cursive'; 
+
 }

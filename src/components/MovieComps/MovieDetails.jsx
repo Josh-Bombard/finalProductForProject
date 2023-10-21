@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useUser } from '../UserComps/UserContext';
 import ReviewForm from '../ReviewComps/ReviewForm';
-import { USERS_API } from '../../api\'s/USERS_API';
 import { REVIEWS_API } from '../../api\'s/REVIEWS_API';
 
 function MovieDetails() {
@@ -58,17 +57,19 @@ useEffect(() => {
     <div className='container text-center'>
       <h2>Movie Details</h2>
       {movieDetails ? (
-        <div>
-          <h3>{movieDetails.Title} ({movieDetails.Year})</h3>
-          <img src={movieDetails.Poster}/>
-          <p>{movieDetails.Plot}</p>
-          <p>Director: {movieDetails.Director}</p>
-          <p>Actors: {movieDetails.Actors}</p>
-          {/* Add more movie details as needed */}
-        </div>
-      ) : (
-        <p>Loading movie details...</p>
-      )}
+  <div className="movie-details">
+    <h3>{movieDetails.Title} ({movieDetails.Year})</h3>
+    <img src={movieDetails.Poster} alt={movieDetails.Title} className="movie-poster" />
+    <div className="movie-description">
+      <p>{movieDetails.Plot}</p>
+      <p>Director: {movieDetails.Director}</p>
+      <p>Actors: {movieDetails.Actors}</p>
+      {/* Add more movie details as needed */}
+    </div>
+  </div>
+) : (
+  <p className="loading-message">Loading movie details...</p>
+)}
       
         <ReviewForm
         onReviewAdded={handleReviewAdded}
